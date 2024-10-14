@@ -18,16 +18,20 @@ export function initTasks() {
         17,
         45
       ),
-      blue: 2,
-      red: 2,
-      green: 3,
-      gray: 1,
       name: "Doctor 1",
       id: "dr1",
       progress: 0,
       type: "project",
       hideChildren: false,
+      total: 8,
+      green: 3,
+      red: 2,
+      blue: 2,
+      gray: 1,
+      duration: "2h 12m",
       tat_avg: 1.4,
+      tat_min: 0.8,
+      tat_max: 2.1,
     },
     {
       start: new Date(
@@ -54,6 +58,10 @@ export function initTasks() {
       type: "project",
       hideChildren: false,
       tat_avg: 1.8,
+      duration: "2h 12m",
+      tat_min: 0.8,
+      tat_max: 2.1,
+      total: 8,
     },
     {
       start: new Date(
@@ -80,6 +88,10 @@ export function initTasks() {
       type: "project",
       hideChildren: false,
       tat_avg: 1.1,
+      duration: "2h 12m",
+      tat_min: 0.8,
+      tat_max: 2.1,
+      total: 8,
     },
     {
       start: new Date(
@@ -106,6 +118,10 @@ export function initTasks() {
       type: "project",
       hideChildren: false,
       tat_avg: 2.3,
+      duration: "2h 12m",
+      tat_min: 0.8,
+      tat_max: 2.1,
+      total: 8,
     },
   ];
   return tasks;

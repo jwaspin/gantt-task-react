@@ -16,11 +16,15 @@ export interface Task {
   name: string;
   start: Date;
   end: Date;
+  duration: string;
+  total: number;
   blue: number;
   red: number;
   green: number;
   gray: number;
   tat_avg: number;
+  tat_min: number;
+  tat_max: number;
   /**
    * From 0 to 100
    */
