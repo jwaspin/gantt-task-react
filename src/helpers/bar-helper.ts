@@ -20,7 +20,10 @@ export const convertToBarTasks = (
   projectBackgroundColor: string,
   projectBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
-  milestoneBackgroundSelectedColor: string
+  milestoneBackgroundSelectedColor: string,
+  greenColor: string,
+  yellowColor: string,
+  redColor: string
 ) => {
   let barTasks = tasks.map((t, i) => {
     return convertToBarTask(
@@ -42,7 +45,10 @@ export const convertToBarTasks = (
       projectBackgroundColor,
       projectBackgroundSelectedColor,
       milestoneBackgroundColor,
-      milestoneBackgroundSelectedColor
+      milestoneBackgroundSelectedColor,
+      greenColor,
+      yellowColor,
+      redColor
     );
   });
 
@@ -80,7 +86,10 @@ const convertToBarTask = (
   projectBackgroundColor: string,
   projectBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
-  milestoneBackgroundSelectedColor: string
+  milestoneBackgroundSelectedColor: string,
+  greenColor: string,
+  yellowColor: string,
+  redColor: string
 ): BarTask => {
   let barTask: BarTask;
   switch (task.type) {
@@ -112,7 +121,10 @@ const convertToBarTask = (
         projectProgressColor,
         projectProgressSelectedColor,
         projectBackgroundColor,
-        projectBackgroundSelectedColor
+        projectBackgroundSelectedColor,
+        greenColor,
+        yellowColor,
+        redColor
       );
       break;
     default:
@@ -129,7 +141,10 @@ const convertToBarTask = (
         barProgressColor,
         barProgressSelectedColor,
         barBackgroundColor,
-        barBackgroundSelectedColor
+        barBackgroundSelectedColor,
+        greenColor,
+        yellowColor,
+        redColor
       );
       break;
   }
@@ -149,7 +164,10 @@ const convertToBar = (
   barProgressColor: string,
   barProgressSelectedColor: string,
   barBackgroundColor: string,
-  barBackgroundSelectedColor: string
+  barBackgroundSelectedColor: string,
+  greenColor: string,
+  yellowColor: string,
+  redColor: string
 ): BarTask => {
   let x1: number;
   let x2: number;
@@ -180,6 +198,9 @@ const convertToBar = (
     backgroundSelectedColor: barBackgroundSelectedColor,
     progressColor: barProgressColor,
     progressSelectedColor: barProgressSelectedColor,
+    greenColor,
+    yellowColor,
+    redColor,
     ...task.styles,
   };
   return {
@@ -224,6 +245,9 @@ const convertToMilestone = (
     backgroundSelectedColor: milestoneBackgroundSelectedColor,
     progressColor: "",
     progressSelectedColor: "",
+    greenColor: "",
+    yellowColor: "",
+    redColor: "",
     ...task.styles,
   };
   return {

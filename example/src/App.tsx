@@ -6,7 +6,7 @@ import "gantt-task-react/dist/index.css";
 
 // Init
 const App = () => {
-  const [view, setView] = React.useState<ViewMode>(ViewMode.Day);
+  const [view, setView] = React.useState<ViewMode>(ViewMode.Hour);
   const [tasks, setTasks] = React.useState<Task[]>(initTasks());
   const [isChecked, setIsChecked] = React.useState(true);
   let columnWidth = 65;
@@ -85,7 +85,7 @@ const App = () => {
         onClick={handleClick}
         onSelect={handleSelect}
         onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
+        listCellWidth={isChecked ? "50px" : ""}
         ganttHeight={600}
         columnWidth={columnWidth}
       />
