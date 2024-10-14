@@ -16,6 +16,10 @@ export interface Task {
   name: string;
   start: Date;
   end: Date;
+  blue: number;
+  red: number;
+  green: number;
+  gray: number;
   /**
    * From 0 to 100
    */
