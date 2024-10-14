@@ -13,7 +13,7 @@ export function initTasks() {
       name: "Doctor 1",
       id: "dr1",
       progress: 0,
-      type: "task",
+      type: "project",
     },
     {
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
@@ -31,7 +31,7 @@ export function initTasks() {
       name: "Doctor 2",
       id: "dr2",
       progress: 0,
-      type: "task",
+      type: "project",
     },
     {
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
@@ -43,7 +43,7 @@ export function initTasks() {
       name: "Doctor 3",
       id: "dr3",
       progress: 0,
-      type: "task",
+      type: "project",
     },
     {
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),
@@ -55,7 +55,7 @@ export function initTasks() {
       name: "Doctor 4",
       id: "dr4",
       progress: 0,
-      type: "task",
+      type: "project",
     },
   ];
   return tasks;
