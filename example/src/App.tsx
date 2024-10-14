@@ -8,7 +8,7 @@ import "gantt-task-react/dist/index.css";
 const App = () => {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Hour);
   const [tasks, setTasks] = React.useState<Task[]>(initTasks());
-  const [isChecked, setIsChecked] = React.useState(true);
+  const [viewType, setViewType] = React.useState<"type" | "tat">("tat");
   let columnWidth = 65;
   if (view === ViewMode.Year) {
     columnWidth = 350;
@@ -69,26 +69,43 @@ const App = () => {
 
   return (
     <div className="Wrapper">
+      <h3>Timeline: {viewType.toUpperCase()}</h3>
       <ViewSwitcher
         onViewModeChange={viewMode => setView(viewMode)}
-        onViewListChange={setIsChecked}
-        isChecked={isChecked}
+        viewType={viewType}
+        setViewType={setViewType}
       />
-      <h3>Gantt With Limited Height</h3>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onDelete={handleTaskDelete}
-        onProgressChange={handleProgressChange}
-        onDoubleClick={handleDblClick}
-        onClick={handleClick}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "50px" : ""}
-        ganttHeight={600}
-        columnWidth={columnWidth}
-      />
+      {viewType === "type" ? (
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          onDateChange={handleTaskChange}
+          onDelete={handleTaskDelete}
+          onProgressChange={handleProgressChange}
+          onDoubleClick={handleDblClick}
+          onClick={handleClick}
+          onSelect={handleSelect}
+          onExpanderClick={handleExpanderClick}
+          listCellWidth="50px"
+          ganttHeight={100}
+          columnWidth={columnWidth}
+        />
+      ) : (
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          onDateChange={handleTaskChange}
+          onDelete={handleTaskDelete}
+          onProgressChange={handleProgressChange}
+          onDoubleClick={handleDblClick}
+          onClick={handleClick}
+          onSelect={handleSelect}
+          onExpanderClick={handleExpanderClick}
+          listCellWidth="50px"
+          ganttHeight={600}
+          columnWidth={columnWidth}
+        />
+      )}
     </div>
   );
 };
