@@ -23,8 +23,10 @@ export const convertToBarTasks = (
   milestoneBackgroundSelectedColor: string,
   greenColor: string,
   yellowColor: string,
-  redColor: string
+  redColor: string,
+  viewType: string
 ) => {
+  console.log("viewType", viewType);
   let barTasks = tasks.map((t, i) => {
     return convertToBarTask(
       t,

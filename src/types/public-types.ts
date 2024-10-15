@@ -10,6 +10,7 @@ export enum ViewMode {
   Year = "Year",
 }
 export type TaskType = "task" | "milestone" | "project";
+export type ViewType = "call-type" | "tat";
 export interface Task {
   id: string;
   type: TaskType;
@@ -157,4 +158,5 @@ export interface StylingOption {
 
 export interface GanttProps extends EventOption, DisplayOption, StylingOption {
   tasks: Task[];
+  viewType: ViewType;
 }

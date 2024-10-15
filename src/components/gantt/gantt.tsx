@@ -26,6 +26,7 @@ import styles from "./gantt.module.css";
 
 export const Gantt: React.FunctionComponent<GanttProps> = ({
   tasks,
+  viewType,
   headerHeight = 50,
   columnWidth = 60,
   listCellWidth = "15px",
@@ -145,7 +146,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         milestoneBackgroundSelectedColor,
         greenColor,
         yellowColor,
-        redColor
+        redColor,
+        viewType
       )
     );
   }, [
@@ -173,6 +175,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     greenColor,
     yellowColor,
     redColor,
+    viewType,
   ]);
 
   useEffect(() => {
