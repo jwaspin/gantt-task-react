@@ -16,6 +16,15 @@ export interface Task {
   name: string;
   start: Date;
   end: Date;
+  duration: string;
+  total: number;
+  blue: number;
+  red: number;
+  green: number;
+  gray: number;
+  tat_avg: number;
+  tat_min: number;
+  tat_max: number;
   /**
    * From 0 to 100
    */
@@ -25,6 +34,9 @@ export interface Task {
     backgroundSelectedColor?: string;
     progressColor?: string;
     progressSelectedColor?: string;
+    greenColor?: string;
+    yellowColor?: string;
+    redColor?: string;
   };
   isDisabled?: boolean;
   project?: string;
@@ -110,6 +122,9 @@ export interface StylingOption {
   projectBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
+  greenColor?: string;
+  yellowColor?: string;
+  redColor?: string;
   arrowColor?: string;
   arrowIndent?: number;
   todayColor?: string;

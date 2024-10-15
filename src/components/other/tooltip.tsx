@@ -123,22 +123,30 @@ export const StandardTooltipContent: React.FC<{
   };
   return (
     <div className={styles.tooltipDefaultContainer} style={style}>
-      <b style={{ fontSize: fontSize + 6 }}>{`${
-        task.name
-      }: ${task.start.getDate()}-${
-        task.start.getMonth() + 1
-      }-${task.start.getFullYear()} - ${task.end.getDate()}-${
-        task.end.getMonth() + 1
-      }-${task.end.getFullYear()}`}</b>
-      {task.end.getTime() - task.start.getTime() !== 0 && (
-        <p className={styles.tooltipDefaultContainerParagraph}>{`Duration: ${~~(
-          (task.end.getTime() - task.start.getTime()) /
-          (1000 * 60 * 60 * 24)
-        )} day(s)`}</p>
-      )}
-
+      {/* <b style={{ fontSize: fontSize + 6 }}>{task.name}</b> */}
       <p className={styles.tooltipDefaultContainerParagraph}>
-        {!!task.progress && `Progress: ${task.progress} %`}
+        Total Recordings: {task.total}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Dictation: {task.green}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Red Team: {task.red}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Live Calls: {task.blue}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Total Duration: {task.duration}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        TAT: {task.tat_avg}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Min TAT: {task.tat_min}
+      </p>
+      <p className={styles.tooltipDefaultContainerParagraph}>
+        Max TAT: {task.tat_max}
       </p>
     </div>
   );
