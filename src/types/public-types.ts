@@ -41,6 +41,10 @@ export interface DisplayOption {
   viewMode?: ViewMode;
   viewDate?: Date;
   preStepsCount?: number;
+  /**
+   * Specifies the month name language. Able formats: ISO 639-2, Java Locale
+   */
+  locale?: string;
 }
 
 export interface StylingOption {
@@ -83,6 +87,7 @@ export interface StylingOption {
     rowWidth: string;
     fontFamily: string;
     fontSize: string;
+    locale: string;
     tasks: Task[];
     onExpanderClick: (task: Task) => void;
   }>;

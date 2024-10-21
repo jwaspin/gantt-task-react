@@ -4,14 +4,17 @@ export function initTasks() {
   const currentDate = new Date();
   const tasks: Task[] = [
     {
-      start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-      end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-      name: "Some Project",
       id: "ProjectSample",
       type: "project",
+      name: "Some Project",
+      start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+      end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
       hideChildren: false,
     },
     {
+      id: "Task 0",
+      type: "task",
+      name: "Idea",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
       end: new Date(
         currentDate.getFullYear(),
@@ -20,9 +23,6 @@ export function initTasks() {
         12,
         28
       ),
-      name: "Idea",
-      id: "Task 0",
-      type: "task",
       project: "ProjectSample",
     },
     {
@@ -30,6 +30,7 @@ export function initTasks() {
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4, 0, 0),
       name: "Research",
       id: "Task 1",
+      dependencies: ["Task 0"],
       type: "task",
       project: "ProjectSample",
     },
@@ -38,6 +39,7 @@ export function initTasks() {
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8, 0, 0),
       name: "Discussion with team",
       id: "Task 2",
+      dependencies: ["Task 1"],
       type: "task",
       project: "ProjectSample",
     },
@@ -46,6 +48,7 @@ export function initTasks() {
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9, 0, 0),
       name: "Developing",
       id: "Task 3",
+      dependencies: ["Task 2"],
       type: "task",
       project: "ProjectSample",
     },
@@ -55,6 +58,7 @@ export function initTasks() {
       name: "Review",
       id: "Task 4",
       type: "task",
+      dependencies: ["Task 2"],
       project: "ProjectSample",
     },
     {
@@ -63,6 +67,7 @@ export function initTasks() {
       name: "Release",
       id: "Task 6",
       type: "milestone",
+      dependencies: ["Task 4"],
       project: "ProjectSample",
     },
     {

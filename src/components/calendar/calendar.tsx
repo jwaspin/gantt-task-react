@@ -13,6 +13,7 @@ import styles from "./calendar.module.css";
 
 export type CalendarProps = {
   dateSetup: DateSetup;
+  locale: string;
   viewMode: ViewMode;
   headerHeight: number;
   columnWidth: number;
@@ -22,6 +23,7 @@ export type CalendarProps = {
 
 export const Calendar: React.FC<CalendarProps> = ({
   dateSetup,
+  locale,
   viewMode,
   headerHeight,
   columnWidth,
@@ -74,6 +76,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     const topDefaultHeight = headerHeight * 0.5;
     for (let i = 0; i < dateSetup.dates.length; i++) {
       const date = dateSetup.dates[i];
+      // const bottomValue = getLocaleMonth(date, locale);
       const quarter = "Q" + Math.floor((date.getMonth() + 3) / 3);
       bottomValues.push(
         <text
@@ -114,7 +117,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     const topDefaultHeight = headerHeight * 0.5;
     for (let i = 0; i < dateSetup.dates.length; i++) {
       const date = dateSetup.dates[i];
-      const bottomValue = "todo";
+      const bottomValue = getLocaleMonth(date, locale);
       bottomValues.push(
         <text
           key={bottomValue + date.getFullYear()}

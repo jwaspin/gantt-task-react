@@ -2,18 +2,11 @@ import React from "react";
 import { TaskItemProps } from "../task-item";
 import styles from "./milestone.module.css";
 
-export const Milestone: React.FC<TaskItemProps> = ({
-  task,
-  isDateChangeable,
-  onEventStart,
-  isSelected,
-}) => {
+export const Milestone: React.FC<TaskItemProps> = ({ task }) => {
   const transform = `rotate(45 ${task.x1 + task.height * 0.356} 
     ${task.y + task.height * 0.85})`;
   const getBarColor = () => {
-    return isSelected
-      ? task.styles.backgroundSelectedColor
-      : task.styles.backgroundColor;
+    return task.styles.backgroundColor;
   };
 
   return (
@@ -28,9 +21,6 @@ export const Milestone: React.FC<TaskItemProps> = ({
         ry={task.barCornerRadius}
         transform={transform}
         className={styles.milestoneBackground}
-        onMouseDown={e => {
-          isDateChangeable && onEventStart("move", task, e);
-        }}
       />
     </g>
   );

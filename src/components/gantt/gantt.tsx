@@ -33,6 +33,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   ganttHeight = 0,
   viewMode = ViewMode.Day,
   preStepsCount = 1,
+  locale = "en-GB",
   barFill = 60,
   barCornerRadius = 3,
   barBackgroundColor = "#b8c2cc",
@@ -309,6 +310,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   };
   const calendarProps: CalendarProps = {
     dateSetup,
+    locale,
     viewMode,
     headerHeight,
     columnWidth,
@@ -338,6 +340,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     fontFamily,
     fontSize,
     tasks: barTasks,
+    locale,
     headerHeight,
     scrollY,
     ganttHeight,
