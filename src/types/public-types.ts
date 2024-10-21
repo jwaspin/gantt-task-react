@@ -14,16 +14,16 @@ export interface Task {
   id: string;
   type: TaskType;
   name: string;
+  provider?: string;
   start: Date;
   end: Date;
+  transcriptionStart?: Date;
+  transcriptionEnd?: Date;
+  hideChildren?: boolean;
   styles?: {
     backgroundColor?: string;
     backgroundSelectedColor?: string;
   };
-  isDisabled?: boolean;
-  provider?: string;
-  dependencies?: string[];
-  hideChildren?: boolean;
 }
 
 export interface EventOption {
