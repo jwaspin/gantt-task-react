@@ -9,28 +9,21 @@ export enum ViewMode {
   QuarterYear = "QuarterYear",
   Year = "Year",
 }
-export type TaskType = "task" | "milestone" | "project";
+export type TaskType = "task" | "milestone" | "provider";
 export interface Task {
   id: string;
   type: TaskType;
   name: string;
+  provider?: string;
   start: Date;
   end: Date;
-  /**
-   * From 0 to 100
-   */
-  progress: number;
+  transcriptionStart?: Date;
+  transcriptionEnd?: Date;
+  hideChildren?: boolean;
   styles?: {
     backgroundColor?: string;
     backgroundSelectedColor?: string;
-    progressColor?: string;
-    progressSelectedColor?: string;
   };
-  isDisabled?: boolean;
-  project?: string;
-  dependencies?: string[];
-  hideChildren?: boolean;
-  displayOrder?: number;
 }
 
 export interface EventOption {
@@ -58,13 +51,6 @@ export interface EventOption {
     children: Task[]
   ) => void | boolean | Promise<void> | Promise<boolean>;
   /**
-   * Invokes on progress change. Chart undoes operation if method return false or error.
-   */
-  onProgressChange?: (
-    task: Task,
-    children: Task[]
-  ) => void | boolean | Promise<void> | Promise<boolean>;
-  /**
    * Invokes on delete selected task. Chart undoes operation if method return false or error.
    */
   onDelete?: (task: Task) => void | boolean | Promise<void> | Promise<boolean>;
@@ -82,7 +68,6 @@ export interface DisplayOption {
    * Specifies the month name language. Able formats: ISO 639-2, Java Locale
    */
   locale?: string;
-  rtl?: boolean;
 }
 
 export interface StylingOption {
@@ -100,14 +85,10 @@ export interface StylingOption {
    * From 0 to 100
    */
   barFill?: number;
-  barProgressColor?: string;
-  barProgressSelectedColor?: string;
   barBackgroundColor?: string;
   barBackgroundSelectedColor?: string;
-  projectProgressColor?: string;
-  projectProgressSelectedColor?: string;
-  projectBackgroundColor?: string;
-  projectBackgroundSelectedColor?: string;
+  providerBackgroundColor?: string;
+  providerBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
   arrowColor?: string;
@@ -131,11 +112,6 @@ export interface StylingOption {
     fontSize: string;
     locale: string;
     tasks: Task[];
-    selectedTaskId: string;
-    /**
-     * Sets selected task by id
-     */
-    setSelectedTask: (taskId: string) => void;
     onExpanderClick: (task: Task) => void;
   }>;
 }

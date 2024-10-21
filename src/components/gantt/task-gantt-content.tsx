@@ -26,7 +26,6 @@ export type TaskGanttContentProps = {
   arrowIndent: number;
   fontSize: string;
   fontFamily: string;
-  rtl: boolean;
   setGanttEvent: (value: GanttEvent) => void;
   setFailedTask: (value: BarTask | null) => void;
   setSelectedTask: (taskId: string) => void;
@@ -46,19 +45,16 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   arrowIndent,
   fontFamily,
   fontSize,
-  rtl,
   setGanttEvent,
   setFailedTask,
   setSelectedTask,
   onDateChange,
-  onProgressChange,
   onDoubleClick,
   onClick,
-  onDelete,
 }) => {
   const point = svg?.current?.createSVGPoint();
   const [xStep, setXStep] = useState(0);
-  const [initEventX1Delta, setInitEventX1Delta] = useState(0);
+  const [initEventX1Delta] = useState(0);
   const [isMoving, setIsMoving] = useState(false);
 
   // create xStep
@@ -88,8 +84,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         ganttEvent.changedTask,
         xStep,
         timeStep,
-        initEventX1Delta,
-        rtl
+        initEventX1Delta
       );
       if (isChanged) {
         setGanttEvent({ action: ganttEvent.action, changedTask });
@@ -112,14 +107,12 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
         changedTask,
         xStep,
         timeStep,
-        initEventX1Delta,
-        rtl
+        initEventX1Delta
       );
 
       const isNotLikeOriginal =
         originalSelectedTask.start !== newChangedTask.start ||
-        originalSelectedTask.end !== newChangedTask.end ||
-        originalSelectedTask.progress !== newChangedTask.progress;
+        originalSelectedTask.end !== newChangedTask.end;
 
       // remove listeners
       svg.current.removeEventListener("mousemove", handleMouseMove);
@@ -130,24 +123,12 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
       // custom operation start
       let operationSuccess = true;
       if (
-        (action === "move" || action === "end" || action === "start") &&
+        (action === "end" || action === "start") &&
         onDateChange &&
         isNotLikeOriginal
       ) {
         try {
           const result = await onDateChange(
-            newChangedTask,
-            newChangedTask.barChildren
-          );
-          if (result !== undefined) {
-            operationSuccess = result;
-          }
-        } catch (error) {
-          operationSuccess = false;
-        }
-      } else if (onProgressChange && isNotLikeOriginal) {
-        try {
-          const result = await onProgressChange(
             newChangedTask,
             newChangedTask.barChildren
           );
@@ -167,10 +148,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
 
     if (
       !isMoving &&
-      (ganttEvent.action === "move" ||
-        ganttEvent.action === "end" ||
-        ganttEvent.action === "start" ||
-        ganttEvent.action === "progress") &&
+      (ganttEvent.action === "end" || ganttEvent.action === "start") &&
       svg?.current
     ) {
       svg.current.addEventListener("mousemove", handleMouseMove);
@@ -181,13 +159,11 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     ganttEvent,
     xStep,
     initEventX1Delta,
-    onProgressChange,
     timeStep,
     onDateChange,
     svg,
     isMoving,
     point,
-    rtl,
     setFailedTask,
     setGanttEvent,
   ]);
@@ -207,56 +183,24 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
     }
     // Keyboard events
     else if (isKeyboardEvent(event)) {
-      if (action === "delete") {
-        if (onDelete) {
-          try {
-            const result = await onDelete(task);
-            if (result !== undefined && result) {
-              setGanttEvent({ action, changedTask: task });
-            }
-          } catch (error) {
-            console.error("Error on Delete. " + error);
-          }
+      // Mouse Events
+      if (action === "mouseenter") {
+        if (!ganttEvent.action) {
+          setGanttEvent({
+            action,
+            changedTask: task,
+            originalSelectedTask: task,
+          });
         }
+      } else if (action === "mouseleave") {
+        if (ganttEvent.action === "mouseenter") {
+          setGanttEvent({ action: "" });
+        }
+      } else if (action === "dblclick") {
+        !!onDoubleClick && onDoubleClick(task);
+      } else if (action === "click") {
+        !!onClick && onClick(task);
       }
-    }
-    // Mouse Events
-    else if (action === "mouseenter") {
-      if (!ganttEvent.action) {
-        setGanttEvent({
-          action,
-          changedTask: task,
-          originalSelectedTask: task,
-        });
-      }
-    } else if (action === "mouseleave") {
-      if (ganttEvent.action === "mouseenter") {
-        setGanttEvent({ action: "" });
-      }
-    } else if (action === "dblclick") {
-      !!onDoubleClick && onDoubleClick(task);
-    } else if (action === "click") {
-      !!onClick && onClick(task);
-    }
-    // Change task event start
-    else if (action === "move") {
-      if (!svg?.current || !point) return;
-      point.x = event.clientX;
-      const cursor = point.matrixTransform(
-        svg.current.getScreenCTM()?.inverse()
-      );
-      setInitEventX1Delta(cursor.x - task.x1);
-      setGanttEvent({
-        action,
-        changedTask: task,
-        originalSelectedTask: task,
-      });
-    } else {
-      setGanttEvent({
-        action,
-        changedTask: task,
-        originalSelectedTask: task,
-      });
     }
   };
 
@@ -273,7 +217,6 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
                 rowHeight={rowHeight}
                 taskHeight={taskHeight}
                 arrowIndent={arrowIndent}
-                rtl={rtl}
               />
             );
           });
@@ -286,13 +229,9 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
               task={task}
               arrowIndent={arrowIndent}
               taskHeight={taskHeight}
-              isProgressChangeable={!!onProgressChange && !task.isDisabled}
-              isDateChangeable={!!onDateChange && !task.isDisabled}
-              isDelete={!task.isDisabled}
               onEventStart={handleBarEventStart}
               key={task.id}
               isSelected={!!selectedTask && task.id === selectedTask.id}
-              rtl={rtl}
             />
           );
         })}

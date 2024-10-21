@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styles from "./task-list-table.module.css";
 import { Task } from "../../types/public-types";
 
-const localeDateStringCache = {};
+const localeDateStringCache: { [key: string]: string } = {};
 const toLocaleDateStringFactory =
   (locale: string) =>
   (date: Date, dateTimeOptions: Intl.DateTimeFormatOptions) => {
@@ -70,8 +70,8 @@ export const TaskListTableDefault: React.FC<{
             <div
               className={styles.taskListCell}
               style={{
-                minWidth: rowWidth,
-                maxWidth: rowWidth,
+                minWidth: "100px",
+                maxWidth: "100px",
               }}
               title={t.name}
             >
@@ -105,7 +105,25 @@ export const TaskListTableDefault: React.FC<{
                 maxWidth: rowWidth,
               }}
             >
+              &nbsp;todo
+            </div>
+            <div
+              className={styles.taskListCell}
+              style={{
+                minWidth: rowWidth,
+                maxWidth: rowWidth,
+              }}
+            >
               &nbsp;{toLocaleDateString(t.end, dateTimeOptions)}
+            </div>
+            <div
+              className={styles.taskListCell}
+              style={{
+                minWidth: rowWidth,
+                maxWidth: rowWidth,
+              }}
+            >
+              &nbsp;todo
             </div>
           </div>
         );

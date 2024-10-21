@@ -4,16 +4,31 @@ export function initTasks() {
   const currentDate = new Date();
   const tasks: Task[] = [
     {
-      start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
-      end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-      name: "Some Project",
-      id: "ProjectSample",
-      progress: 25,
-      type: "project",
+      id: "doc1",
+      type: "provider",
+      name: "Doctor 1",
+      start: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDay(),
+        11,
+        0
+      ),
+      end: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDay(),
+        17,
+        45
+      ),
       hideChildren: false,
-      displayOrder: 1,
     },
     {
+      id: "event1",
+      type: "task",
+      // typeInternal: "live-call",
+      name: "Live Call session at 08/16/2024 10.58 AM",
+      provider: "doc1",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
       end: new Date(
         currentDate.getFullYear(),
@@ -22,88 +37,70 @@ export function initTasks() {
         12,
         28
       ),
-      name: "Idea",
-      id: "Task 0",
-      progress: 45,
-      type: "task",
-      project: "ProjectSample",
-      displayOrder: 2,
+      // transcriptionStart: new Date(
+      //   currentDate.getFullYear(),
+      //   currentDate.getMonth(),
+      //   1
+      // ),
     },
     {
+      id: "event2",
+      type: "task",
+      name: "Patient 123",
+      provider: "doc1",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4, 0, 0),
-      name: "Research",
-      id: "Task 1",
-      progress: 25,
-      dependencies: ["Task 0"],
-      type: "task",
-      project: "ProjectSample",
-      displayOrder: 3,
     },
     {
+      id: "event3",
+      type: "task",
+      name: "Patient 456",
+      provider: "doc1",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8, 0, 0),
-      name: "Discussion with team",
-      id: "Task 2",
-      progress: 10,
-      dependencies: ["Task 1"],
-      type: "task",
-      project: "ProjectSample",
-      displayOrder: 4,
     },
     {
+      id: "Task 3",
+      type: "task",
+      name: "Developing",
+      provider: "doc1",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9, 0, 0),
-      name: "Developing",
-      id: "Task 3",
-      progress: 2,
-      dependencies: ["Task 2"],
-      type: "task",
-      project: "ProjectSample",
-      displayOrder: 5,
     },
     {
-      start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
-      end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),
-      name: "Review",
       id: "Task 4",
       type: "task",
-      progress: 70,
-      dependencies: ["Task 2"],
-      project: "ProjectSample",
-      displayOrder: 6,
+      name: "Review",
+      provider: "doc1",
+      start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 8),
+      end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10),
     },
     {
+      id: "Task 6",
+      type: "milestone",
+      name: "Release",
+      provider: "doc1",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
-      name: "Release",
-      id: "Task 6",
-      progress: currentDate.getMonth(),
-      type: "milestone",
-      dependencies: ["Task 4"],
-      project: "ProjectSample",
-      displayOrder: 7,
     },
     {
+      id: "Task 9",
+      type: "task",
+      name: "",
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 18),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 19),
-      name: "Party Time",
-      id: "Task 9",
-      progress: 0,
-      isDisabled: true,
-      type: "task",
     },
   ];
   return tasks;
 }
 
-export function getStartEndDateForProject(tasks: Task[], projectId: string) {
-  const projectTasks = tasks.filter(t => t.project === projectId);
-  let start = projectTasks[0].start;
-  let end = projectTasks[0].end;
+export function getStartEndDateForProvider(tasks: Task[], providerId: string) {
+  const providerTasks = tasks.filter(t => t.provider === providerId);
+  let start = providerTasks[0].start;
+  let end = providerTasks[0].end;
 
-  for (let i = 0; i < projectTasks.length; i++) {
-    const task = projectTasks[i];
+  for (let i = 0; i < providerTasks.length; i++) {
+    const task = providerTasks[i];
     if (start.getTime() > task.start.getTime()) {
       start = task.start;
     }

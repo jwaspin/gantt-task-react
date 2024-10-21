@@ -1,14 +1,14 @@
 import React from "react";
 import { Task, ViewMode, Gantt } from "gantt-task-react";
 import { ViewSwitcher } from "./components/view-switcher";
-import { getStartEndDateForProject, initTasks } from "./helper";
+import { getStartEndDateForProvider, initTasks } from "./helper";
 import "gantt-task-react/dist/index.css";
 
 // Init
 const App = () => {
-  const [view, setView] = React.useState<ViewMode>(ViewMode.Day);
+  const [view, setView] = React.useState<ViewMode>(ViewMode.Hour);
   const [tasks, setTasks] = React.useState<Task[]>(initTasks());
-  const [isChecked, setIsChecked] = React.useState(true);
+  const [viewType, setViewType] = React.useState<"type" | "tat">("tat");
   let columnWidth = 65;
   if (view === ViewMode.Year) {
     columnWidth = 350;
@@ -21,33 +21,21 @@ const App = () => {
   const handleTaskChange = (task: Task) => {
     console.log("On date change Id:" + task.id);
     let newTasks = tasks.map(t => (t.id === task.id ? task : t));
-    if (task.project) {
-      const [start, end] = getStartEndDateForProject(newTasks, task.project);
-      const project = newTasks[newTasks.findIndex(t => t.id === task.project)];
+    if (task.provider) {
+      const [start, end] = getStartEndDateForProvider(newTasks, task.provider);
+      const provider =
+        newTasks[newTasks.findIndex(t => t.id === task.provider)];
       if (
-        project.start.getTime() !== start.getTime() ||
-        project.end.getTime() !== end.getTime()
+        provider.start.getTime() !== start.getTime() ||
+        provider.end.getTime() !== end.getTime()
       ) {
-        const changedProject = { ...project, start, end };
+        const changedProvider = { ...provider, start, end };
         newTasks = newTasks.map(t =>
-          t.id === task.project ? changedProject : t
+          t.id === task.provider ? changedProvider : t
         );
       }
     }
     setTasks(newTasks);
-  };
-
-  const handleTaskDelete = (task: Task) => {
-    const conf = window.confirm("Are you sure about " + task.name + " ?");
-    if (conf) {
-      setTasks(tasks.filter(t => t.id !== task.id));
-    }
-    return conf;
-  };
-
-  const handleProgressChange = async (task: Task) => {
-    setTasks(tasks.map(t => (t.id === task.id ? task : t)));
-    console.log("On progress change Id:" + task.id);
   };
 
   const handleDblClick = (task: Task) => {
@@ -69,40 +57,39 @@ const App = () => {
 
   return (
     <div className="Wrapper">
+      <h3>Timeline: {viewType.toUpperCase()}</h3>
       <ViewSwitcher
         onViewModeChange={viewMode => setView(viewMode)}
-        onViewListChange={setIsChecked}
-        isChecked={isChecked}
+        viewType={viewType}
+        setViewType={setViewType}
       />
-      <h3>Gantt With Unlimited Height</h3>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onDelete={handleTaskDelete}
-        onProgressChange={handleProgressChange}
-        onDoubleClick={handleDblClick}
-        onClick={handleClick}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
-        columnWidth={columnWidth}
-      />
-      <h3>Gantt With Limited Height</h3>
-      <Gantt
-        tasks={tasks}
-        viewMode={view}
-        onDateChange={handleTaskChange}
-        onDelete={handleTaskDelete}
-        onProgressChange={handleProgressChange}
-        onDoubleClick={handleDblClick}
-        onClick={handleClick}
-        onSelect={handleSelect}
-        onExpanderClick={handleExpanderClick}
-        listCellWidth={isChecked ? "155px" : ""}
-        ganttHeight={300}
-        columnWidth={columnWidth}
-      />
+      {viewType === "type" ? (
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          onDateChange={handleTaskChange}
+          onDoubleClick={handleDblClick}
+          onClick={handleClick}
+          onSelect={handleSelect}
+          onExpanderClick={handleExpanderClick}
+          listCellWidth="50px"
+          ganttHeight={100}
+          columnWidth={columnWidth}
+        />
+      ) : (
+        <Gantt
+          tasks={tasks}
+          viewMode={view}
+          onDateChange={handleTaskChange}
+          onDoubleClick={handleDblClick}
+          onClick={handleClick}
+          onSelect={handleSelect}
+          onExpanderClick={handleExpanderClick}
+          listCellWidth="50px"
+          ganttHeight={600}
+          columnWidth={columnWidth}
+        />
+      )}
     </div>
   );
 };
