@@ -9,7 +9,7 @@ export enum ViewMode {
   QuarterYear = "QuarterYear",
   Year = "Year",
 }
-export type TaskType = "task" | "milestone" | "project";
+export type TaskType = "task" | "milestone" | "provider";
 export interface Task {
   id: string;
   type: TaskType;
@@ -21,7 +21,7 @@ export interface Task {
     backgroundSelectedColor?: string;
   };
   isDisabled?: boolean;
-  project?: string;
+  provider?: string;
   dependencies?: string[];
   hideChildren?: boolean;
 }
@@ -64,8 +64,8 @@ export interface StylingOption {
   barFill?: number;
   barBackgroundColor?: string;
   barBackgroundSelectedColor?: string;
-  projectBackgroundColor?: string;
-  projectBackgroundSelectedColor?: string;
+  providerBackgroundColor?: string;
+  providerBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
   arrowColor?: string;

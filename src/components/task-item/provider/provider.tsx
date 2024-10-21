@@ -1,6 +1,6 @@
 import React from "react";
 import { TaskItemProps } from "../task-item";
-import styles from "./project.module.css";
+import styles from "./provider.module.css";
 
 // const getTatColor = (
 //   task: TaskItemProps["task"] /* , isSelected: boolean */
@@ -15,21 +15,21 @@ import styles from "./project.module.css";
 //   return "#FF0000";
 // };
 
-export const Project: React.FC<TaskItemProps> = ({ task }) => {
+export const Provider: React.FC<TaskItemProps> = ({ task }) => {
   const barColor = "#00FF00"; // getTatColor(task);
-  const projectWith = task.x2 - task.x1;
+  const providerWith = task.x2 - task.x1;
 
   return (
-    <g tabIndex={0} className={styles.projectWrapper}>
+    <g tabIndex={0} className={styles.providerWrapper}>
       <rect
         fill={barColor}
         x={task.x1}
-        width={projectWith}
+        width={providerWith}
         y={task.y}
         height={task.height}
         rx={task.barCornerRadius}
         ry={task.barCornerRadius}
-        className={styles.projectTop}
+        className={styles.providerTop}
       />
     </g>
   );

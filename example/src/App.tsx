@@ -1,7 +1,7 @@
 import React from "react";
 import { Task, ViewMode, Gantt } from "gantt-task-react";
 import { ViewSwitcher } from "./components/view-switcher";
-import { /* getStartEndDateForProject, */ initTasks } from "./helper";
+import { /* getStartEndDateForProvider, */ initTasks } from "./helper";
 import "gantt-task-react/dist/index.css";
 
 // Init

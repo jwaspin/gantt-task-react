@@ -11,8 +11,8 @@ export const convertToBarTasks = (
   handleWidth: number,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string,
-  projectBackgroundColor: string,
-  projectBackgroundSelectedColor: string,
+  providerBackgroundColor: string,
+  providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
 ) => {
@@ -28,8 +28,8 @@ export const convertToBarTasks = (
       handleWidth,
       barBackgroundColor,
       barBackgroundSelectedColor,
-      projectBackgroundColor,
-      projectBackgroundSelectedColor,
+      providerBackgroundColor,
+      providerBackgroundSelectedColor,
       milestoneBackgroundColor,
       milestoneBackgroundSelectedColor
     );
@@ -61,8 +61,8 @@ const convertToBarTask = (
   handleWidth: number,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string,
-  projectBackgroundColor: string,
-  projectBackgroundSelectedColor: string,
+  providerBackgroundColor: string,
+  providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string
 ): BarTask => {
@@ -82,7 +82,7 @@ const convertToBarTask = (
         milestoneBackgroundSelectedColor
       );
       break;
-    case "project":
+    case "provider":
       barTask = convertToBar(
         task,
         index,
@@ -92,8 +92,8 @@ const convertToBarTask = (
         taskHeight,
         barCornerRadius,
         handleWidth,
-        projectBackgroundColor,
-        projectBackgroundSelectedColor
+        providerBackgroundColor,
+        providerBackgroundSelectedColor
       );
       break;
     default:
@@ -138,7 +138,7 @@ const convertToBar = (
   }
 
   const y = taskYCoordinate(index, rowHeight, taskHeight);
-  const hideChildren = task.type === "project" ? task.hideChildren : undefined;
+  const hideChildren = task.type === "provider" ? task.hideChildren : undefined;
 
   const styles = {
     backgroundColor: barBackgroundColor,
