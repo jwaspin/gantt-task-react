@@ -43,19 +43,20 @@ function getChildren(taskList: Task[], task: Task) {
   var taskChildren: Task[] = [];
   tasks.forEach(t => {
     taskChildren.push(...getChildren(taskList, t));
-  })
+  });
   tasks = tasks.concat(tasks, taskChildren);
   return tasks;
 }
 
 export const sortTasks = (taskA: Task, taskB: Task) => {
-  const orderA = taskA.displayOrder || Number.MAX_VALUE;
-  const orderB = taskB.displayOrder || Number.MAX_VALUE;
-  if (orderA > orderB) {
-    return 1;
-  } else if (orderA < orderB) {
-    return -1;
-  } else {
-    return 0;
-  }
+  return taskA.start.getTime() - taskB.start.getTime();
+  // const orderA = taskA.displayOrder || Number.MAX_VALUE;
+  // const orderB = taskB.displayOrder || Number.MAX_VALUE;
+  // if (orderA > orderB) {
+  //   return 1;
+  // } else if (orderA < orderB) {
+  //   return -1;
+  // } else {
+  //   return 0;
+  // }
 };
