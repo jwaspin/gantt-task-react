@@ -1,21 +1,19 @@
 import { ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import React from "react";
+
 type ViewSwitcherProps = {
   onViewModeChange: (viewMode: ViewMode) => void;
-  viewType: string;
-  setViewType: (type: "type" | "tat") => void;
+  setViewType: (type: "call_type" | "tat") => void;
 };
+
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
   onViewModeChange,
-  viewType,
   setViewType,
 }) => {
-  const handleViewTypeChange = (type: "type" | "tat") => {
+  const handleViewTypeChange = (type: "call_type" | "tat") => {
     setViewType(type);
   };
-
-  console.log(viewType);
 
   return (
     <div className="ViewContainer">
@@ -27,7 +25,7 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
         }}
       >
         <input placeholder="Search Providers" />
-        <button onClick={() => handleViewTypeChange("type")}>Type</button>
+        <button onClick={() => handleViewTypeChange("call_type")}>Type</button>
         <button onClick={() => handleViewTypeChange("tat")}>TAT</button>
       </div>
       <div>

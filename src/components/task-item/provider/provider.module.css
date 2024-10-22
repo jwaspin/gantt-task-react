@@ -1,13 +1,13 @@
-.projectWrapper {
+.providerWrapper {
   cursor: pointer;
   outline: none;
 }
 
-.projectBackground {
+.providerBackground {
   user-select: none;
   opacity: 0.6;
 }
 
-.projectTop {
+.providerTop {
   user-select: none;
 }

@@ -10,22 +10,21 @@ export const convertToBarTasks = (
   taskHeight: number,
   barCornerRadius: number,
   handleWidth: number,
-  rtl: boolean,
-  barProgressColor: string,
-  barProgressSelectedColor: string,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string,
-  projectProgressColor: string,
-  projectProgressSelectedColor: string,
-  projectBackgroundColor: string,
-  projectBackgroundSelectedColor: string,
+  providerBackgroundColor: string,
+  providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string,
-  greenColor: string,
-  yellowColor: string,
-  redColor: string
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string,
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ) => {
   let barTasks = tasks.map((t, i) => {
+    console.log("t", t);
     return convertToBarTask(
       t,
       i,
@@ -35,26 +34,24 @@ export const convertToBarTasks = (
       taskHeight,
       barCornerRadius,
       handleWidth,
-      rtl,
-      barProgressColor,
-      barProgressSelectedColor,
       barBackgroundColor,
       barBackgroundSelectedColor,
-      projectProgressColor,
-      projectProgressSelectedColor,
-      projectBackgroundColor,
-      projectBackgroundSelectedColor,
+      providerBackgroundColor,
+      providerBackgroundSelectedColor,
       milestoneBackgroundColor,
       milestoneBackgroundSelectedColor,
-      greenColor,
-      yellowColor,
-      redColor
+      greenBarColor,
+      yellowBarColor,
+      redBarColor,
+      dictationBarColor,
+      liveCallBarColor,
+      redTeamBarColor
     );
   });
 
   // set dependencies
   barTasks = barTasks.map(task => {
-    const dependencies = task.dependencies || [];
+    const dependencies: string[] = [];
     for (let j = 0; j < dependencies.length; j++) {
       const dependence = barTasks.findIndex(
         value => value.id === dependencies[j]
@@ -76,20 +73,18 @@ const convertToBarTask = (
   taskHeight: number,
   barCornerRadius: number,
   handleWidth: number,
-  rtl: boolean,
-  barProgressColor: string,
-  barProgressSelectedColor: string,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string,
-  projectProgressColor: string,
-  projectProgressSelectedColor: string,
-  projectBackgroundColor: string,
-  projectBackgroundSelectedColor: string,
+  providerBackgroundColor: string,
+  providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
   milestoneBackgroundSelectedColor: string,
-  greenColor: string,
-  yellowColor: string,
-  redColor: string
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string,
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ): BarTask => {
   let barTask: BarTask;
   switch (task.type) {
@@ -107,7 +102,7 @@ const convertToBarTask = (
         milestoneBackgroundSelectedColor
       );
       break;
-    case "project":
+    case "provider":
       barTask = convertToBar(
         task,
         index,
@@ -117,14 +112,14 @@ const convertToBarTask = (
         taskHeight,
         barCornerRadius,
         handleWidth,
-        rtl,
-        projectProgressColor,
-        projectProgressSelectedColor,
-        projectBackgroundColor,
-        projectBackgroundSelectedColor,
-        greenColor,
-        yellowColor,
-        redColor
+        providerBackgroundColor,
+        providerBackgroundSelectedColor,
+        greenBarColor,
+        yellowBarColor,
+        redBarColor,
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       );
       break;
     default:
@@ -137,17 +132,18 @@ const convertToBarTask = (
         taskHeight,
         barCornerRadius,
         handleWidth,
-        rtl,
-        barProgressColor,
-        barProgressSelectedColor,
         barBackgroundColor,
         barBackgroundSelectedColor,
-        greenColor,
-        yellowColor,
-        redColor
+        greenBarColor,
+        yellowBarColor,
+        redBarColor,
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       );
       break;
   }
+  console.log("barTask", barTask);
   return barTask;
 };
 
@@ -160,47 +156,50 @@ const convertToBar = (
   taskHeight: number,
   barCornerRadius: number,
   handleWidth: number,
-  rtl: boolean,
-  barProgressColor: string,
-  barProgressSelectedColor: string,
   barBackgroundColor: string,
   barBackgroundSelectedColor: string,
-  greenColor: string,
-  yellowColor: string,
-  redColor: string
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string,
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ): BarTask => {
   let x1: number;
   let x2: number;
-  if (rtl) {
-    x2 = taskXCoordinateRTL(task.start, dates, columnWidth);
-    x1 = taskXCoordinateRTL(task.end, dates, columnWidth);
+  let x3: number;
+  let x4: number;
+
+  x1 = taskXCoordinate(task.start, dates, columnWidth);
+  x2 = taskXCoordinate(task.end, dates, columnWidth);
+  if (task.transcriptionStart) {
+    x3 = taskXCoordinate(task.transcriptionStart, dates, columnWidth);
   } else {
-    x1 = taskXCoordinate(task.start, dates, columnWidth);
-    x2 = taskXCoordinate(task.end, dates, columnWidth);
+    x3 = -1;
+  }
+  if (task.transcriptionEnd) {
+    x4 = taskXCoordinate(task.transcriptionEnd, dates, columnWidth);
+  } else {
+    x4 = -1;
   }
   let typeInternal: TaskTypeInternal = task.type;
-  if (typeInternal === "task" && x2 - x1 < handleWidth * 2) {
-    typeInternal = "smalltask";
-    x2 = x1 + handleWidth * 2;
-  }
+  // if (typeInternal === "task" && x2 - x1 < handleWidth * 2) {
+  //   typeInternal = "smalltask";
+  //   x2 = x1 + handleWidth * 2;
+  // }
 
-  const [progressWidth, progressX] = progressWithByParams(
-    x1,
-    x2,
-    task.progress,
-    rtl
-  );
   const y = taskYCoordinate(index, rowHeight, taskHeight);
-  const hideChildren = task.type === "project" ? task.hideChildren : undefined;
+  const hideChildren = task.type === "provider" ? task.hideChildren : undefined;
 
   const styles = {
     backgroundColor: barBackgroundColor,
     backgroundSelectedColor: barBackgroundSelectedColor,
-    progressColor: barProgressColor,
-    progressSelectedColor: barProgressSelectedColor,
-    greenColor,
-    yellowColor,
-    redColor,
+    greenColor: greenBarColor,
+    yellowColor: yellowBarColor,
+    redColor: redBarColor,
+    dictationBarColor: dictationBarColor,
+    liveCallBarColor: liveCallBarColor,
+    redTeamBarColor: redTeamBarColor,
     ...task.styles,
   };
   return {
@@ -208,10 +207,10 @@ const convertToBar = (
     typeInternal,
     x1,
     x2,
+    x3,
+    x4,
     y,
     index,
-    progressX,
-    progressWidth,
     barCornerRadius,
     handleWidth,
     hideChildren,
@@ -243,11 +242,6 @@ const convertToMilestone = (
   const styles = {
     backgroundColor: milestoneBackgroundColor,
     backgroundSelectedColor: milestoneBackgroundSelectedColor,
-    progressColor: "",
-    progressSelectedColor: "",
-    greenColor: "",
-    yellowColor: "",
-    redColor: "",
     ...task.styles,
   };
   return {
@@ -257,12 +251,9 @@ const convertToMilestone = (
     x2,
     y,
     index,
-    progressX: 0,
-    progressWidth: 0,
     barCornerRadius,
     handleWidth,
     typeInternal: task.type,
-    progress: 0,
     height: rotatedHeight,
     hideChildren: undefined,
     barChildren: [],
@@ -279,15 +270,7 @@ const taskXCoordinate = (xDate: Date, dates: Date[], columnWidth: number) => {
   const x = index * columnWidth + percentOfInterval * columnWidth;
   return x;
 };
-const taskXCoordinateRTL = (
-  xDate: Date,
-  dates: Date[],
-  columnWidth: number
-) => {
-  let x = taskXCoordinate(xDate, dates, columnWidth);
-  x += columnWidth;
-  return x;
-};
+
 const taskYCoordinate = (
   index: number,
   rowHeight: number,
@@ -322,25 +305,6 @@ export const progressByProgressWidth = (
   if (progressPercent >= 100) return 100;
   else if (progressPercent <= 0) return 0;
   else return progressPercent;
-};
-
-const progressByX = (x: number, task: BarTask) => {
-  if (x >= task.x2) return 100;
-  else if (x <= task.x1) return 0;
-  else {
-    const barWidth = task.x2 - task.x1;
-    const progressPercent = Math.round(((x - task.x1) * 100) / barWidth);
-    return progressPercent;
-  }
-};
-const progressByXRTL = (x: number, task: BarTask) => {
-  if (x >= task.x2) return 0;
-  else if (x <= task.x1) return 100;
-  else {
-    const barWidth = task.x2 - task.x1;
-    const progressPercent = Math.round(((task.x2 - x) * 100) / barWidth);
-    return progressPercent;
-  }
 };
 
 export const getProgressPoint = (
@@ -411,8 +375,7 @@ export const handleTaskBySVGMouseEvent = (
   selectedTask: BarTask,
   xStep: number,
   timeStep: number,
-  initEventX1Delta: number,
-  rtl: boolean
+  initEventX1Delta: number
 ): { isChanged: boolean; changedTask: BarTask } => {
   let result: { isChanged: boolean; changedTask: BarTask };
   switch (selectedTask.type) {
@@ -433,8 +396,7 @@ export const handleTaskBySVGMouseEvent = (
         selectedTask,
         xStep,
         timeStep,
-        initEventX1Delta,
-        rtl
+        initEventX1Delta
       );
       break;
   }
@@ -447,60 +409,23 @@ const handleTaskBySVGMouseEventForBar = (
   selectedTask: BarTask,
   xStep: number,
   timeStep: number,
-  initEventX1Delta: number,
-  rtl: boolean
+  initEventX1Delta: number
 ): { isChanged: boolean; changedTask: BarTask } => {
   const changedTask: BarTask = { ...selectedTask };
   let isChanged = false;
   switch (action) {
-    case "progress":
-      if (rtl) {
-        changedTask.progress = progressByXRTL(svgX, selectedTask);
-      } else {
-        changedTask.progress = progressByX(svgX, selectedTask);
-      }
-      isChanged = changedTask.progress !== selectedTask.progress;
-      if (isChanged) {
-        const [progressWidth, progressX] = progressWithByParams(
-          changedTask.x1,
-          changedTask.x2,
-          changedTask.progress,
-          rtl
-        );
-        changedTask.progressWidth = progressWidth;
-        changedTask.progressX = progressX;
-      }
-      break;
     case "start": {
       const newX1 = startByX(svgX, xStep, selectedTask);
       changedTask.x1 = newX1;
       isChanged = changedTask.x1 !== selectedTask.x1;
       if (isChanged) {
-        if (rtl) {
-          changedTask.end = dateByX(
-            newX1,
-            selectedTask.x1,
-            selectedTask.end,
-            xStep,
-            timeStep
-          );
-        } else {
-          changedTask.start = dateByX(
-            newX1,
-            selectedTask.x1,
-            selectedTask.start,
-            xStep,
-            timeStep
-          );
-        }
-        const [progressWidth, progressX] = progressWithByParams(
-          changedTask.x1,
-          changedTask.x2,
-          changedTask.progress,
-          rtl
+        changedTask.start = dateByX(
+          newX1,
+          selectedTask.x1,
+          selectedTask.start,
+          xStep,
+          timeStep
         );
-        changedTask.progressWidth = progressWidth;
-        changedTask.progressX = progressX;
       }
       break;
     }
@@ -509,31 +434,13 @@ const handleTaskBySVGMouseEventForBar = (
       changedTask.x2 = newX2;
       isChanged = changedTask.x2 !== selectedTask.x2;
       if (isChanged) {
-        if (rtl) {
-          changedTask.start = dateByX(
-            newX2,
-            selectedTask.x2,
-            selectedTask.start,
-            xStep,
-            timeStep
-          );
-        } else {
-          changedTask.end = dateByX(
-            newX2,
-            selectedTask.x2,
-            selectedTask.end,
-            xStep,
-            timeStep
-          );
-        }
-        const [progressWidth, progressX] = progressWithByParams(
-          changedTask.x1,
-          changedTask.x2,
-          changedTask.progress,
-          rtl
+        changedTask.end = dateByX(
+          newX2,
+          selectedTask.x2,
+          selectedTask.end,
+          xStep,
+          timeStep
         );
-        changedTask.progressWidth = progressWidth;
-        changedTask.progressX = progressX;
       }
       break;
     }
@@ -561,14 +468,6 @@ const handleTaskBySVGMouseEventForBar = (
         );
         changedTask.x1 = newMoveX1;
         changedTask.x2 = newMoveX2;
-        const [progressWidth, progressX] = progressWithByParams(
-          changedTask.x1,
-          changedTask.x2,
-          changedTask.progress,
-          rtl
-        );
-        changedTask.progressWidth = progressWidth;
-        changedTask.progressX = progressX;
       }
       break;
     }

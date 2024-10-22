@@ -19,7 +19,7 @@ export function isBarTask(task: Task | BarTask): task is BarTask {
 
 export function removeHiddenTasks(tasks: Task[]) {
   const groupedTasks = tasks.filter(
-    t => t.hideChildren && t.type === "project"
+    t => t.hideChildren && t.type === "provider"
   );
   if (groupedTasks.length > 0) {
     for (let i = 0; groupedTasks.length > i; i++) {
@@ -33,17 +33,13 @@ export function removeHiddenTasks(tasks: Task[]) {
 
 function getChildren(taskList: Task[], task: Task) {
   let tasks: Task[] = [];
-  if (task.type !== "project") {
-    tasks = taskList.filter(
-      t => t.dependencies && t.dependencies.indexOf(task.id) !== -1
-    );
-  } else {
-    tasks = taskList.filter(t => t.project && t.project === task.id);
+  if (task.type === "provider") {
+    tasks = taskList.filter(t => t.provider && t.provider === task.id);
   }
   var taskChildren: Task[] = [];
   tasks.forEach(t => {
     taskChildren.push(...getChildren(taskList, t));
-  })
+  });
   tasks = tasks.concat(tasks, taskChildren);
   return tasks;
 }

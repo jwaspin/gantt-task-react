@@ -42,7 +42,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;Blue
+          &nbsp;Dictation
         </div>
         <div
           className={styles.ganttTable_HeaderSeparator}
@@ -57,7 +57,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;Red
+          &nbsp;Red Team
         </div>
         <div
           className={styles.ganttTable_HeaderSeparator}
@@ -72,7 +72,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;Green
+          &nbsp;Live Call
         </div>
         <div
           className={styles.ganttTable_HeaderSeparator}
@@ -87,7 +87,7 @@ export const TaskListHeaderDefault: React.FC<{
             minWidth: rowWidth,
           }}
         >
-          &nbsp;Gray
+          &nbsp;(not sure)
         </div>
       </div>
     </div>

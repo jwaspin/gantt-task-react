@@ -9,40 +9,39 @@ export enum ViewMode {
   QuarterYear = "QuarterYear",
   Year = "Year",
 }
-export type TaskType = "task" | "milestone" | "project";
+export type TaskType = "task" | "milestone" | "provider";
+export type SubType = "red_team" | "live_call" | "dictation";
+export type ViewType = "call_type" | "tat";
 export interface Task {
   id: string;
   type: TaskType;
+  subType?: SubType;
   name: string;
+  provider?: string;
   start: Date;
   end: Date;
-  duration: string;
-  total: number;
-  blue: number;
-  red: number;
-  green: number;
-  gray: number;
-  tat_avg: number;
-  tat_min: number;
-  tat_max: number;
-  /**
-   * From 0 to 100
-   */
-  progress: number;
+  transcriptionStart?: Date;
+  transcriptionEnd?: Date;
+  tat_avg?: number;
+  tat_min?: number;
+  tat_max?: number;
+  tat_total?: number;
+  red_team_count?: number;
+  live_call_count?: number;
+  dictation_count?: number;
+  total_count?: number;
+  hideChildren?: boolean;
+  displayOrder?: number;
   styles?: {
     backgroundColor?: string;
     backgroundSelectedColor?: string;
-    progressColor?: string;
-    progressSelectedColor?: string;
-    greenColor?: string;
-    yellowColor?: string;
-    redColor?: string;
+    redBarColor?: string;
+    yellowBarColor?: string;
+    greenBarColor?: string;
+    dictationBarColor?: string;
+    liveCallBarColor?: string;
+    redTeamBarColor?: string;
   };
-  isDisabled?: boolean;
-  project?: string;
-  dependencies?: string[];
-  hideChildren?: boolean;
-  displayOrder?: number;
 }
 
 export interface EventOption {
@@ -70,13 +69,6 @@ export interface EventOption {
     children: Task[]
   ) => void | boolean | Promise<void> | Promise<boolean>;
   /**
-   * Invokes on progress change. Chart undoes operation if method return false or error.
-   */
-  onProgressChange?: (
-    task: Task,
-    children: Task[]
-  ) => void | boolean | Promise<void> | Promise<boolean>;
-  /**
    * Invokes on delete selected task. Chart undoes operation if method return false or error.
    */
   onDelete?: (task: Task) => void | boolean | Promise<void> | Promise<boolean>;
@@ -94,7 +86,6 @@ export interface DisplayOption {
    * Specifies the month name language. Able formats: ISO 639-2, Java Locale
    */
   locale?: string;
-  rtl?: boolean;
 }
 
 export interface StylingOption {
@@ -112,19 +103,18 @@ export interface StylingOption {
    * From 0 to 100
    */
   barFill?: number;
-  barProgressColor?: string;
-  barProgressSelectedColor?: string;
   barBackgroundColor?: string;
   barBackgroundSelectedColor?: string;
-  projectProgressColor?: string;
-  projectProgressSelectedColor?: string;
-  projectBackgroundColor?: string;
-  projectBackgroundSelectedColor?: string;
+  providerBackgroundColor?: string;
+  providerBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
-  greenColor?: string;
-  yellowColor?: string;
-  redColor?: string;
+  redBarColor?: string;
+  yellowBarColor?: string;
+  greenBarColor?: string;
+  dictationBarColor?: string;
+  liveCallBarColor?: string;
+  redTeamBarColor?: string;
   arrowColor?: string;
   arrowIndent?: number;
   todayColor?: string;
@@ -146,15 +136,11 @@ export interface StylingOption {
     fontSize: string;
     locale: string;
     tasks: Task[];
-    selectedTaskId: string;
-    /**
-     * Sets selected task by id
-     */
-    setSelectedTask: (taskId: string) => void;
     onExpanderClick: (task: Task) => void;
   }>;
 }
 
 export interface GanttProps extends EventOption, DisplayOption, StylingOption {
   tasks: Task[];
+  viewType: ViewType;
 }
