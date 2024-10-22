@@ -10,6 +10,7 @@ export enum ViewMode {
   Year = "Year",
 }
 export type TaskType = "task" | "milestone" | "provider";
+export type ViewType = "call-type" | "tat";
 export interface Task {
   id: string;
   type: TaskType;
@@ -19,6 +20,14 @@ export interface Task {
   end: Date;
   transcriptionStart?: Date;
   transcriptionEnd?: Date;
+  tat_avg?: number;
+  tat_min?: number;
+  tat_max?: number;
+  tat_total?: number;
+  red_team_count?: number;
+  live_call_count?: number;
+  dictation_count?: number;
+  total_count?: number;
   hideChildren?: boolean;
   styles?: {
     backgroundColor?: string;
@@ -91,6 +100,9 @@ export interface StylingOption {
   providerBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
+  greenBarColor?: string;
+  yellowBarColor?: string;
+  redBarColor?: string;
   arrowColor?: string;
   arrowIndent?: number;
   todayColor?: string;
@@ -118,4 +130,5 @@ export interface StylingOption {
 
 export interface GanttProps extends EventOption, DisplayOption, StylingOption {
   tasks: Task[];
+  viewType: ViewType;
 }

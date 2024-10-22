@@ -15,8 +15,13 @@ export const convertToBarTasks = (
   providerBackgroundColor: string,
   providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
-  milestoneBackgroundSelectedColor: string
+  milestoneBackgroundSelectedColor: string,
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string,
+  viewType: string
 ) => {
+  console.log("viewType", viewType);
   let barTasks = tasks.map((t, i) => {
     return convertToBarTask(
       t,
@@ -32,7 +37,10 @@ export const convertToBarTasks = (
       providerBackgroundColor,
       providerBackgroundSelectedColor,
       milestoneBackgroundColor,
-      milestoneBackgroundSelectedColor
+      milestoneBackgroundSelectedColor,
+      greenBarColor,
+      yellowBarColor,
+      redBarColor
     );
   });
 
@@ -65,7 +73,10 @@ const convertToBarTask = (
   providerBackgroundColor: string,
   providerBackgroundSelectedColor: string,
   milestoneBackgroundColor: string,
-  milestoneBackgroundSelectedColor: string
+  milestoneBackgroundSelectedColor: string,
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string
 ): BarTask => {
   let barTask: BarTask;
   switch (task.type) {
@@ -94,7 +105,10 @@ const convertToBarTask = (
         barCornerRadius,
         handleWidth,
         providerBackgroundColor,
-        providerBackgroundSelectedColor
+        providerBackgroundSelectedColor,
+        greenBarColor,
+        yellowBarColor,
+        redBarColor
       );
       break;
     default:
@@ -108,7 +122,10 @@ const convertToBarTask = (
         barCornerRadius,
         handleWidth,
         barBackgroundColor,
-        barBackgroundSelectedColor
+        barBackgroundSelectedColor,
+        greenBarColor,
+        yellowBarColor,
+        redBarColor
       );
       break;
   }
@@ -125,7 +142,10 @@ const convertToBar = (
   barCornerRadius: number,
   handleWidth: number,
   barBackgroundColor: string,
-  barBackgroundSelectedColor: string
+  barBackgroundSelectedColor: string,
+  greenBarColor: string,
+  yellowBarColor: string,
+  redBarColor: string
 ): BarTask => {
   let x1: number;
   let x2: number;
@@ -144,6 +164,9 @@ const convertToBar = (
   const styles = {
     backgroundColor: barBackgroundColor,
     backgroundSelectedColor: barBackgroundSelectedColor,
+    greenColor: greenBarColor,
+    yellowColor: yellowBarColor,
+    redColor: redBarColor,
     ...task.styles,
   };
   return {

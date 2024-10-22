@@ -4,11 +4,12 @@ import { ViewSwitcher } from "./components/view-switcher";
 import { getStartEndDateForProvider, initTasks } from "./helper";
 import "gantt-task-react/dist/index.css";
 
-// Init
+// Main entry point for the example
 const App = () => {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Hour);
   const [tasks, setTasks] = React.useState<Task[]>(initTasks());
-  const [viewType, setViewType] = React.useState<"type" | "tat">("tat");
+  const [viewType, setViewType] = React.useState<"call-type" | "tat">("tat");
+
   let columnWidth = 65;
   if (view === ViewMode.Year) {
     columnWidth = 350;
@@ -57,39 +58,24 @@ const App = () => {
 
   return (
     <div className="Wrapper">
-      <h3>Timeline: {viewType.toUpperCase()}</h3>
+      <h3>Timeline: {viewType === "tat" ? "Turn Around Time" : "Call Type"}</h3>
       <ViewSwitcher
         onViewModeChange={viewMode => setView(viewMode)}
-        viewType={viewType}
         setViewType={setViewType}
       />
-      {viewType === "type" ? (
-        <Gantt
-          tasks={tasks}
-          viewMode={view}
-          onDateChange={handleTaskChange}
-          onDoubleClick={handleDblClick}
-          onClick={handleClick}
-          onSelect={handleSelect}
-          onExpanderClick={handleExpanderClick}
-          listCellWidth="50px"
-          ganttHeight={100}
-          columnWidth={columnWidth}
-        />
-      ) : (
-        <Gantt
-          tasks={tasks}
-          viewMode={view}
-          onDateChange={handleTaskChange}
-          onDoubleClick={handleDblClick}
-          onClick={handleClick}
-          onSelect={handleSelect}
-          onExpanderClick={handleExpanderClick}
-          listCellWidth="50px"
-          ganttHeight={600}
-          columnWidth={columnWidth}
-        />
-      )}
+      <Gantt
+        tasks={tasks}
+        viewMode={view}
+        viewType="call-type"
+        onDateChange={handleTaskChange}
+        onDoubleClick={handleDblClick}
+        onClick={handleClick}
+        onSelect={handleSelect}
+        onExpanderClick={handleExpanderClick}
+        listCellWidth="50px"
+        ganttHeight={600}
+        columnWidth={columnWidth}
+      />
     </div>
   );
 };
