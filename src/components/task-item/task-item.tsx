@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, /* useRef, */ useState } from "react";
 import { BarTask } from "../../types/bar-task";
 import { GanttContentMoveAction } from "../../types/gantt-task-actions";
 import { Bar } from "./bar/bar";
-import { BarSmall } from "./bar/bar-small";
+// import { BarSmall } from "./bar/bar-small";
 import { Milestone } from "./milestone/milestone";
 import { Provider } from "./provider/provider";
-import style from "./task-list.module.css";
+import { ViewType } from "../../types/public-types";
+// import style from "./task-list.module.css";
 
 export type TaskItemProps = {
   task: BarTask;
+  viewType: ViewType;
   arrowIndent: number;
   taskHeight: number;
   isSelected: boolean;
@@ -20,12 +22,12 @@ export type TaskItemProps = {
 };
 
 export const TaskItem: React.FC<TaskItemProps> = props => {
-  const { task, arrowIndent, taskHeight, isSelected, onEventStart } = {
+  const { task, /* arrowIndent, taskHeight, */ isSelected, onEventStart } = {
     ...props,
   };
-  const textRef = useRef<SVGTextElement>(null);
+  // const textRef = useRef<SVGTextElement>(null);
   const [taskItem, setTaskItem] = useState<JSX.Element>(<div />);
-  const [isTextInside, setIsTextInside] = useState(true);
+  // const [isTextInside, setIsTextInside] = useState(true);
 
   useEffect(() => {
     switch (task.typeInternal) {
@@ -35,29 +37,29 @@ export const TaskItem: React.FC<TaskItemProps> = props => {
       case "provider":
         setTaskItem(<Provider {...props} />);
         break;
-      case "smalltask":
-        setTaskItem(<BarSmall {...props} />);
-        break;
+      // case "smalltask":
+      //   setTaskItem(<BarSmall {...props} />);
+      //   break;
       default:
         setTaskItem(<Bar {...props} />);
         break;
     }
   }, [task, isSelected]);
 
-  useEffect(() => {
-    if (textRef.current) {
-      setIsTextInside(textRef.current.getBBox().width < task.x2 - task.x1);
-    }
-  }, [textRef, task]);
+  // useEffect(() => {
+  //   if (textRef.current) {
+  //     setIsTextInside(textRef.current.getBBox().width < task.x2 - task.x1);
+  //   }
+  // }, [textRef, task]);
 
-  const getX = () => {
-    const width = task.x2 - task.x1;
-    const hasChild = task.barChildren.length > 0;
-    if (isTextInside) {
-      return task.x1 + width * 0.5;
-    }
-    return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2;
-  };
+  // const getX = () => {
+  //   const width = task.x2 - task.x1;
+  //   const hasChild = task.barChildren.length > 0;
+  //   if (isTextInside) {
+  //     return task.x1 + width * 0.5;
+  //   }
+  //   return task.x1 + width + arrowIndent * +hasChild + arrowIndent * 0.2;
+  // };
 
   return (
     <g
@@ -81,7 +83,7 @@ export const TaskItem: React.FC<TaskItemProps> = props => {
       }}
     >
       {taskItem}
-      <text
+      {/* <text
         x={getX()}
         y={task.y + taskHeight * 0.5}
         className={
@@ -92,7 +94,7 @@ export const TaskItem: React.FC<TaskItemProps> = props => {
         ref={textRef}
       >
         {task.name}
-      </text>
+      </text> */}
     </g>
   );
 };

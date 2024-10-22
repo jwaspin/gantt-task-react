@@ -5,15 +5,13 @@ export interface BarTask extends Task {
   typeInternal: TaskTypeInternal;
   x1: number;
   x2: number;
+  x3?: number;
+  x4?: number;
   y: number;
   height: number;
   barCornerRadius: number;
   handleWidth: number;
   barChildren: BarTask[];
-  styles: {
-    backgroundColor: string;
-    backgroundSelectedColor: string;
-  };
 }
 
 export type TaskTypeInternal = TaskType | "smalltask";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { EventOption } from "../../types/public-types";
+import { EventOption, ViewType } from "../../types/public-types";
 import { BarTask } from "../../types/bar-task";
-import { Arrow } from "../other/arrow";
+// import { Arrow } from "../other/arrow";
 import { handleTaskBySVGMouseEvent } from "../../helpers/bar-helper";
 import { isKeyboardEvent } from "../../helpers/other-helper";
 import { TaskItem } from "../task-item/task-item";
@@ -13,6 +13,7 @@ import {
 
 export type TaskGanttContentProps = {
   tasks: BarTask[];
+  viewType: ViewType;
   dates: Date[];
   ganttEvent: GanttEvent;
   selectedTask: BarTask | undefined;
@@ -33,15 +34,16 @@ export type TaskGanttContentProps = {
 
 export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
   tasks,
+  viewType,
   dates,
   ganttEvent,
   selectedTask,
-  rowHeight,
+  // rowHeight,
   columnWidth,
   timeStep,
   svg,
   taskHeight,
-  arrowColor,
+  // arrowColor,
   arrowIndent,
   fontFamily,
   fontSize,
@@ -206,7 +208,7 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
 
   return (
     <g className="content">
-      <g className="arrows" fill={arrowColor} stroke={arrowColor}>
+      {/* <g className="arrows" fill={arrowColor} stroke={arrowColor}>
         {tasks.map(task => {
           return task.barChildren.map(child => {
             return (
@@ -221,12 +223,13 @@ export const TaskGanttContent: React.FC<TaskGanttContentProps> = ({
             );
           });
         })}
-      </g>
+      </g> */}
       <g className="bar" fontFamily={fontFamily} fontSize={fontSize}>
         {tasks.map(task => {
           return (
             <TaskItem
               task={task}
+              viewType={viewType}
               arrowIndent={arrowIndent}
               taskHeight={taskHeight}
               onEventStart={handleBarEventStart}

@@ -35,6 +35,12 @@ export interface Task {
   styles?: {
     backgroundColor?: string;
     backgroundSelectedColor?: string;
+    redBarColor?: string;
+    yellowBarColor?: string;
+    greenBarColor?: string;
+    dictationBarColor?: string;
+    liveCallBarColor?: string;
+    redTeamBarColor?: string;
   };
 }
 
@@ -103,9 +109,12 @@ export interface StylingOption {
   providerBackgroundSelectedColor?: string;
   milestoneBackgroundColor?: string;
   milestoneBackgroundSelectedColor?: string;
-  greenBarColor?: string;
-  yellowBarColor?: string;
   redBarColor?: string;
+  yellowBarColor?: string;
+  greenBarColor?: string;
+  dictationBarColor?: string;
+  liveCallBarColor?: string;
+  redTeamBarColor?: string;
   arrowColor?: string;
   arrowIndent?: number;
   todayColor?: string;

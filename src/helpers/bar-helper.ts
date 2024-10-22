@@ -19,10 +19,12 @@ export const convertToBarTasks = (
   greenBarColor: string,
   yellowBarColor: string,
   redBarColor: string,
-  viewType: string
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ) => {
-  console.log("viewType", viewType);
   let barTasks = tasks.map((t, i) => {
+    console.log("t", t);
     return convertToBarTask(
       t,
       i,
@@ -40,7 +42,10 @@ export const convertToBarTasks = (
       milestoneBackgroundSelectedColor,
       greenBarColor,
       yellowBarColor,
-      redBarColor
+      redBarColor,
+      dictationBarColor,
+      liveCallBarColor,
+      redTeamBarColor
     );
   });
 
@@ -76,7 +81,10 @@ const convertToBarTask = (
   milestoneBackgroundSelectedColor: string,
   greenBarColor: string,
   yellowBarColor: string,
-  redBarColor: string
+  redBarColor: string,
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ): BarTask => {
   let barTask: BarTask;
   switch (task.type) {
@@ -108,7 +116,10 @@ const convertToBarTask = (
         providerBackgroundSelectedColor,
         greenBarColor,
         yellowBarColor,
-        redBarColor
+        redBarColor,
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       );
       break;
     default:
@@ -125,10 +136,14 @@ const convertToBarTask = (
         barBackgroundSelectedColor,
         greenBarColor,
         yellowBarColor,
-        redBarColor
+        redBarColor,
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       );
       break;
   }
+  console.log("barTask", barTask);
   return barTask;
 };
 
@@ -145,18 +160,33 @@ const convertToBar = (
   barBackgroundSelectedColor: string,
   greenBarColor: string,
   yellowBarColor: string,
-  redBarColor: string
+  redBarColor: string,
+  dictationBarColor: string,
+  liveCallBarColor: string,
+  redTeamBarColor: string
 ): BarTask => {
   let x1: number;
   let x2: number;
+  let x3: number;
+  let x4: number;
 
   x1 = taskXCoordinate(task.start, dates, columnWidth);
   x2 = taskXCoordinate(task.end, dates, columnWidth);
-  let typeInternal: TaskTypeInternal = task.type;
-  if (typeInternal === "task" && x2 - x1 < handleWidth * 2) {
-    typeInternal = "smalltask";
-    x2 = x1 + handleWidth * 2;
+  if (task.transcriptionStart) {
+    x3 = taskXCoordinate(task.transcriptionStart, dates, columnWidth);
+  } else {
+    x3 = -1;
   }
+  if (task.transcriptionEnd) {
+    x4 = taskXCoordinate(task.transcriptionEnd, dates, columnWidth);
+  } else {
+    x4 = -1;
+  }
+  let typeInternal: TaskTypeInternal = task.type;
+  // if (typeInternal === "task" && x2 - x1 < handleWidth * 2) {
+  //   typeInternal = "smalltask";
+  //   x2 = x1 + handleWidth * 2;
+  // }
 
   const y = taskYCoordinate(index, rowHeight, taskHeight);
   const hideChildren = task.type === "provider" ? task.hideChildren : undefined;
@@ -167,6 +197,9 @@ const convertToBar = (
     greenColor: greenBarColor,
     yellowColor: yellowBarColor,
     redColor: redBarColor,
+    dictationBarColor: dictationBarColor,
+    liveCallBarColor: liveCallBarColor,
+    redTeamBarColor: redTeamBarColor,
     ...task.styles,
   };
   return {
@@ -174,6 +207,8 @@ const convertToBar = (
     typeInternal,
     x1,
     x2,
+    x3,
+    x4,
     y,
     index,
     barCornerRadius,

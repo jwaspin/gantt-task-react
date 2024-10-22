@@ -46,6 +46,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   greenBarColor = "#27a38a",
   yellowBarColor = "#d1a215",
   redBarColor = "#bf0808",
+  dictationBarColor = "#1e90ff",
+  liveCallBarColor = "#00ff00",
+  redTeamBarColor = "#ff0000",
   handleWidth = 8,
   timeStep = 300000,
   arrowColor = "grey",
@@ -129,7 +132,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         greenBarColor,
         yellowBarColor,
         redBarColor,
-        viewType
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       )
     );
   }, [
@@ -152,6 +157,9 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     greenBarColor,
     yellowBarColor,
     redBarColor,
+    dictationBarColor,
+    liveCallBarColor,
+    redTeamBarColor,
     viewType,
   ]);
 
@@ -382,6 +390,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   };
   const barProps: TaskGanttContentProps = {
     tasks: barTasks,
+    viewType,
     dates: dateSetup.dates,
     ganttEvent,
     selectedTask,
