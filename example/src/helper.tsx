@@ -20,7 +20,7 @@ export function initTasks() {
     {
       id: "event1",
       type: "task",
-      // taskType: "live_call",
+      subType: "live_call",
       name: "Live Call session at 08/16/2024 10.58 AM",
       provider: "doc1",
       start: new Date(2024, 7, 16, 10, 58),
@@ -32,7 +32,7 @@ export function initTasks() {
     {
       id: "event2",
       type: "task",
-      // taskType: "dictation",
+      subType: "dictation",
       name: "C W",
       provider: "doc1",
       start: new Date(2024, 7, 16, 12, 33),
@@ -44,6 +44,7 @@ export function initTasks() {
     {
       id: "event3",
       type: "task",
+      subType: "red_team",
       name: "L C",
       provider: "doc1",
       start: new Date(2024, 7, 16, 13, 11),
@@ -55,6 +56,7 @@ export function initTasks() {
     {
       id: "Task 3",
       type: "task",
+      subType: "red_team",
       name: "L B",
       provider: "doc1",
       start: new Date(2024, 7, 16, 14, 50),
@@ -64,6 +66,7 @@ export function initTasks() {
     {
       id: "Task 4",
       type: "task",
+      subType: "live_call",
       name: "Live Call session at 08/16/2024 03.08 PM",
       provider: "doc1",
       start: new Date(2024, 7, 16, 15, 8),
@@ -73,6 +76,7 @@ export function initTasks() {
     {
       id: "Task 6",
       type: "task",
+      subType: "dictation",
       name: "C B",
       provider: "doc1",
       start: new Date(2024, 7, 16, 16, 30),
@@ -82,6 +86,7 @@ export function initTasks() {
     {
       id: "Task 9",
       type: "task",
+      subType: "live_call",
       name: "Live Call session at 08/16/2024 05.05 PM",
       provider: "doc1",
       start: new Date(2024, 7, 16, 17, 5),

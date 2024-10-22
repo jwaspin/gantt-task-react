@@ -4,14 +4,14 @@ import React from "react";
 
 type ViewSwitcherProps = {
   onViewModeChange: (viewMode: ViewMode) => void;
-  setViewType: (type: "call-type" | "tat") => void;
+  setViewType: (type: "call_type" | "tat") => void;
 };
 
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
   onViewModeChange,
   setViewType,
 }) => {
-  const handleViewTypeChange = (type: "call-type" | "tat") => {
+  const handleViewTypeChange = (type: "call_type" | "tat") => {
     setViewType(type);
   };
 
@@ -25,7 +25,7 @@ export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
         }}
       >
         <input placeholder="Search Providers" />
-        <button onClick={() => handleViewTypeChange("call-type")}>Type</button>
+        <button onClick={() => handleViewTypeChange("call_type")}>Type</button>
         <button onClick={() => handleViewTypeChange("tat")}>TAT</button>
       </div>
       <div>

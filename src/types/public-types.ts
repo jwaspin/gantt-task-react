@@ -10,10 +10,12 @@ export enum ViewMode {
   Year = "Year",
 }
 export type TaskType = "task" | "milestone" | "provider";
-export type ViewType = "call-type" | "tat";
+export type SubType = "red_team" | "live_call" | "dictation";
+export type ViewType = "call_type" | "tat";
 export interface Task {
   id: string;
   type: TaskType;
+  subType?: SubType;
   name: string;
   provider?: string;
   start: Date;

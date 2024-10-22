@@ -8,7 +8,7 @@ import "gantt-task-react/dist/index.css";
 const App = () => {
   const [view, setView] = React.useState<ViewMode>(ViewMode.Hour);
   const [tasks, setTasks] = React.useState<Task[]>(initTasks());
-  const [viewType, setViewType] = React.useState<"call-type" | "tat">("tat");
+  const [viewType, setViewType] = React.useState<"call_type" | "tat">("tat");
 
   let columnWidth = 65;
   if (view === ViewMode.Year) {
@@ -66,7 +66,7 @@ const App = () => {
       <Gantt
         tasks={tasks}
         viewMode={view}
-        viewType="call-type"
+        viewType="call_type"
         onDateChange={handleTaskChange}
         onDoubleClick={handleDblClick}
         onClick={handleClick}
