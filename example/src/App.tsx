@@ -66,7 +66,7 @@ const App = () => {
       <Gantt
         tasks={tasks}
         viewMode={view}
-        viewType="call_type"
+        viewType={viewType}
         onDateChange={handleTaskChange}
         onDoubleClick={handleDblClick}
         onClick={handleClick}
