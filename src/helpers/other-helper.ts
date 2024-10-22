@@ -45,14 +45,13 @@ function getChildren(taskList: Task[], task: Task) {
 }
 
 export const sortTasks = (taskA: Task, taskB: Task) => {
-  return taskA.start.getTime() - taskB.start.getTime();
-  // const orderA = taskA.displayOrder || Number.MAX_VALUE;
-  // const orderB = taskB.displayOrder || Number.MAX_VALUE;
-  // if (orderA > orderB) {
-  //   return 1;
-  // } else if (orderA < orderB) {
-  //   return -1;
-  // } else {
-  //   return 0;
-  // }
+  const orderA = taskA.displayOrder || Number.MAX_VALUE;
+  const orderB = taskB.displayOrder || Number.MAX_VALUE;
+  if (orderA > orderB) {
+    return 1;
+  } else if (orderA < orderB) {
+    return -1;
+  } else {
+    return 0;
+  }
 };

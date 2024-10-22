@@ -29,6 +29,7 @@ export interface Task {
   dictation_count?: number;
   total_count?: number;
   hideChildren?: boolean;
+  displayOrder?: number;
   styles?: {
     backgroundColor?: string;
     backgroundSelectedColor?: string;
