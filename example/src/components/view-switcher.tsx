@@ -1,73 +1,76 @@
-import React from "react";
-import "gantt-task-react/dist/index.css";
 import { ViewMode } from "gantt-task-react";
+import "gantt-task-react/dist/index.css";
+import React from "react";
+
 type ViewSwitcherProps = {
-  isChecked: boolean;
-  onViewListChange: (isChecked: boolean) => void;
   onViewModeChange: (viewMode: ViewMode) => void;
+  setViewType: (type: "call_type" | "tat") => void;
 };
+
 export const ViewSwitcher: React.FC<ViewSwitcherProps> = ({
   onViewModeChange,
-  onViewListChange,
-  isChecked,
+  setViewType,
 }) => {
+  const handleViewTypeChange = (type: "call_type" | "tat") => {
+    setViewType(type);
+  };
+
   return (
     <div className="ViewContainer">
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.Hour)}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          gap: "10px",
+        }}
       >
-        Hour
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.QuarterDay)}
-      >
-        Quarter of Day
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.HalfDay)}
-      >
-        Half of Day
-      </button>
-      <button className="Button" onClick={() => onViewModeChange(ViewMode.Day)}>
-        Day
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.Week)}
-      >
-        Week
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.Month)}
-      >
-        Month
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.Year)}
-      >
-        Year
-      </button>
-      <button
-        className="Button"
-        onClick={() => onViewModeChange(ViewMode.QuarterYear)}
-      >
-        Year
-      </button>
-      <div className="Switch">
-        <label className="Switch_Toggle">
-          <input
-            type="checkbox"
-            defaultChecked={isChecked}
-            onClick={() => onViewListChange(!isChecked)}
-          />
-          <span className="Slider" />
-        </label>
-        Show Task List
+        <input placeholder="Search Providers" />
+        <button onClick={() => handleViewTypeChange("call_type")}>Type</button>
+        <button onClick={() => handleViewTypeChange("tat")}>TAT</button>
+      </div>
+      <div>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.Hour)}
+        >
+          Hour
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.QuarterDay)}
+        >
+          Quarter of Day
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.HalfDay)}
+        >
+          Half of Day
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.Day)}
+        >
+          Day
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.Week)}
+        >
+          Week
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.Month)}
+        >
+          Month
+        </button>
+        <button
+          className="Button"
+          onClick={() => onViewModeChange(ViewMode.Year)}
+        >
+          Year
+        </button>
       </div>
     </div>
   );

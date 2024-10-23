@@ -26,9 +26,10 @@ import styles from "./gantt.module.css";
 
 export const Gantt: React.FunctionComponent<GanttProps> = ({
   tasks,
+  viewType,
   headerHeight = 50,
   columnWidth = 60,
-  listCellWidth = "155px",
+  listCellWidth = "15px",
   rowHeight = 50,
   ganttHeight = 0,
   viewMode = ViewMode.Day,
@@ -36,17 +37,18 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   locale = "en-GB",
   barFill = 60,
   barCornerRadius = 3,
-  barProgressColor = "#a3a3ff",
-  barProgressSelectedColor = "#8282f5",
   barBackgroundColor = "#b8c2cc",
   barBackgroundSelectedColor = "#aeb8c2",
-  projectProgressColor = "#7db59a",
-  projectProgressSelectedColor = "#59a985",
-  projectBackgroundColor = "#fac465",
-  projectBackgroundSelectedColor = "#f7bb53",
+  providerBackgroundColor = "#fac465",
+  providerBackgroundSelectedColor = "#f7bb53",
   milestoneBackgroundColor = "#f1c453",
   milestoneBackgroundSelectedColor = "#f29e4c",
-  rtl = false,
+  greenBarColor = "#27a38a",
+  yellowBarColor = "#d1a215",
+  redBarColor = "#bf0808",
+  dictationBarColor = "#1e90ff",
+  liveCallBarColor = "#00ff00",
+  redTeamBarColor = "#ff0000",
   handleWidth = 8,
   timeStep = 300000,
   arrowColor = "grey",
@@ -59,10 +61,8 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
   TaskListHeader = TaskListHeaderDefault,
   TaskListTable = TaskListTableDefault,
   onDateChange,
-  onProgressChange,
   onDoubleClick,
   onClick,
-  onDelete,
   onSelect,
   onExpanderClick,
 }) => {
@@ -113,12 +113,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
       preStepsCount
     );
     let newDates = seedDates(startDate, endDate, viewMode);
-    if (rtl) {
-      newDates = newDates.reverse();
-      if (scrollX === -1) {
-        setScrollX(newDates.length * columnWidth);
-      }
-    }
     setDateSetup({ dates: newDates, viewMode });
     setBarTasks(
       convertToBarTasks(
@@ -129,17 +123,18 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
         taskHeight,
         barCornerRadius,
         handleWidth,
-        rtl,
-        barProgressColor,
-        barProgressSelectedColor,
         barBackgroundColor,
         barBackgroundSelectedColor,
-        projectProgressColor,
-        projectProgressSelectedColor,
-        projectBackgroundColor,
-        projectBackgroundSelectedColor,
+        providerBackgroundColor,
+        providerBackgroundSelectedColor,
         milestoneBackgroundColor,
-        milestoneBackgroundSelectedColor
+        milestoneBackgroundSelectedColor,
+        greenBarColor,
+        yellowBarColor,
+        redBarColor,
+        dictationBarColor,
+        liveCallBarColor,
+        redTeamBarColor
       )
     );
   }, [
@@ -151,19 +146,21 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     columnWidth,
     taskHeight,
     handleWidth,
-    barProgressColor,
-    barProgressSelectedColor,
     barBackgroundColor,
     barBackgroundSelectedColor,
-    projectProgressColor,
-    projectProgressSelectedColor,
-    projectBackgroundColor,
-    projectBackgroundSelectedColor,
+    providerBackgroundColor,
+    providerBackgroundSelectedColor,
     milestoneBackgroundColor,
     milestoneBackgroundSelectedColor,
-    rtl,
     scrollX,
     onExpanderClick,
+    greenBarColor,
+    yellowBarColor,
+    redBarColor,
+    dictationBarColor,
+    liveCallBarColor,
+    redTeamBarColor,
+    viewType,
   ]);
 
   useEffect(() => {
@@ -201,18 +198,12 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
       if (action === "delete") {
         setGanttEvent({ action: "" });
         setBarTasks(barTasks.filter(t => t.id !== changedTask.id));
-      } else if (
-        action === "move" ||
-        action === "end" ||
-        action === "start" ||
-        action === "progress"
-      ) {
+      } else if (action === "end" || action === "start") {
         const prevStateTask = barTasks.find(t => t.id === changedTask.id);
         if (
           prevStateTask &&
           (prevStateTask.start.getTime() !== changedTask.start.getTime() ||
-            prevStateTask.end.getTime() !== changedTask.end.getTime() ||
-            prevStateTask.progress !== changedTask.progress)
+            prevStateTask.end.getTime() !== changedTask.end.getTime())
         ) {
           // actions for change
           const newTaskList = barTasks.map(t =>
@@ -256,6 +247,7 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
 
   // scroll events
   useEffect(() => {
+    const wrapperElement = wrapperRef.current;
     const handleWheel = (event: WheelEvent) => {
       if (event.shiftKey || event.deltaX) {
         const scrollMove = event.deltaX ? event.deltaX : event.deltaY;
@@ -284,21 +276,13 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     };
 
     // subscribe if scroll is necessary
-    wrapperRef.current?.addEventListener("wheel", handleWheel, {
+    wrapperElement?.addEventListener("wheel", handleWheel, {
       passive: false,
     });
     return () => {
-      wrapperRef.current?.removeEventListener("wheel", handleWheel);
+      wrapperElement?.removeEventListener("wheel", handleWheel);
     };
-  }, [
-    wrapperRef,
-    scrollY,
-    scrollX,
-    ganttHeight,
-    svgWidth,
-    rtl,
-    ganttFullHeight,
-  ]);
+  }, [wrapperRef, scrollY, scrollX, ganttHeight, svgWidth, ganttFullHeight]);
 
   const handleScrollY = (event: SyntheticEvent<HTMLDivElement>) => {
     if (scrollY !== event.currentTarget.scrollTop && !ignoreScrollEvent) {
@@ -394,7 +378,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     rowHeight,
     dates: dateSetup.dates,
     todayColor,
-    rtl,
   };
   const calendarProps: CalendarProps = {
     dateSetup,
@@ -404,10 +387,10 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     columnWidth,
     fontFamily,
     fontSize,
-    rtl,
   };
   const barProps: TaskGanttContentProps = {
     tasks: barTasks,
+    viewType,
     dates: dateSetup.dates,
     ganttEvent,
     selectedTask,
@@ -420,15 +403,12 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
     fontSize,
     arrowIndent,
     svgWidth,
-    rtl,
     setGanttEvent,
     setFailedTask,
     setSelectedTask: handleSelectedTask,
     onDateChange,
-    onProgressChange,
     onDoubleClick,
     onClick,
-    onDelete,
   };
 
   const tableProps: TaskListProps = {
@@ -480,7 +460,6 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
             headerHeight={headerHeight}
             taskListWidth={taskListWidth}
             TooltipContent={TooltipContent}
-            rtl={rtl}
             svgWidth={svgWidth}
           />
         )}
@@ -490,14 +469,12 @@ export const Gantt: React.FunctionComponent<GanttProps> = ({
           headerHeight={headerHeight}
           scroll={scrollY}
           onScroll={handleScrollY}
-          rtl={rtl}
         />
       </div>
       <HorizontalScroll
         svgWidth={svgWidth}
         taskListWidth={taskListWidth}
         scroll={scrollX}
-        rtl={rtl}
         onScroll={handleScrollX}
       />
     </div>
